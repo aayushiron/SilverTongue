@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     double elapsedTime;
     public static int wpm;
     PermissionManager permissionManager;
-    TextView txt;
-    int MY_DATA_CHECK_CODE = 1001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
         droidSpeech.setOnDroidSpeechListener(this);
         droidSpeech.setOfflineSpeechRecognition(false);
         droidSpeech.setContinuousSpeechRecognition(true);
-
-        txt = findViewById(R.id.textView);
 
         try {
             vokaturiApi = Vokaturi.getInstance(getApplicationContext());
