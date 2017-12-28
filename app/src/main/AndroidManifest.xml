@@ -3,8 +3,8 @@
     package="com.example.aayushiron.silvertongue">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StatsPage"></activity>
+        <activity android:name=".StatsPage" />
+        <activity android:name=".Emotion" />
+        <activity android:name=".Speed"></activity>
     </application>
 
 </manifest>
