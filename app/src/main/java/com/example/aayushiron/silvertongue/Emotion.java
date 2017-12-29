@@ -1,7 +1,10 @@
 package com.example.aayushiron.silvertongue;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -9,6 +12,7 @@ public class Emotion extends AppCompatActivity {
 
     TextView happiness, anger, sadness, fear, neutrality, mainEmotion;
     ProgressBar happy, angry, sad, afraid, neutral;
+    ImageButton goBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,8 @@ public class Emotion extends AppCompatActivity {
         neutrality = findViewById(R.id.textView12);
         neutral = findViewById(R.id.progressBar5);
 
+        goBack = findViewById(R.id.imageButton);
+
         mainEmotion.setText(MainActivity.emotion);
 
         happiness.setText("Happiness: " + Double.toString(MainActivity.happiness) + "%");
@@ -43,5 +49,13 @@ public class Emotion extends AppCompatActivity {
         sad.setProgress((int) MainActivity.sadness);
         afraid.setProgress((int) MainActivity.fear);
         neutral.setProgress((int) MainActivity.neutrality);
+
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

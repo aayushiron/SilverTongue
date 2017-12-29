@@ -1,5 +1,6 @@
 package com.example.aayushiron.silvertongue;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
@@ -25,6 +26,8 @@ import com.vikramezhil.droidspeech.OnDSPermissionsListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements OnDSListener, OnDSPermissionsListener {
 
@@ -38,28 +41,29 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     public static int wpm;
     public static double happiness, sadness, neutrality, angriness, fear;
     PermissionManager permissionManager;
+    TextView response;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         permissionManager = new PermissionManager() {};
         permissionManager.checkAndRequestPermissions(this);
 
-        if (SpeechRecognizer.isRecognitionAvailable(getApplicationContext())) {
-            droidSpeech = new DroidSpeech(this, null);
-            droidSpeech.setOnDroidSpeechListener(this);
-            droidSpeech.setOfflineSpeechRecognition(true);
-            droidSpeech.setContinuousSpeechRecognition(true);
-        } else {
-            Toast.makeText(getApplicationContext(), "Cannot get words per minute as Speech package is not installed", Toast.LENGTH_SHORT);
-        }
+        startSpeed.setVisibility(View.GONE);
 
         try {
             vokaturiApi = Vokaturi.getInstance(getApplicationContext());
         } catch (VokaturiException e) {
             e.printStackTrace();
+        }
+
+        if (SpeechRecognizer.isRecognitionAvailable(getApplicationContext())) {
+            droidSpeech = new DroidSpeech(this, null);
+            droidSpeech.setOnDroidSpeechListener(this);
+            droidSpeech.setOfflineSpeechRecognition(true);
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot get words per minute as Speech package is not installed", Toast.LENGTH_SHORT).show();
         }
 
         stopEmotion = findViewById(R.id.button2);
@@ -103,29 +107,34 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
                 try {
                     emotionProbabilities = vokaturiApi.stopListeningAndAnalyze();
                     emotionProbabilities.scaledValues(5);
+                    Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
+
+                    emotion = capturedEmotion.toString();
+
+                    happiness = emotionProbabilities.Happiness * 100;
+                    neutrality = emotionProbabilities.Neutrality * 100;
+                    angriness = emotionProbabilities.Anger * 100;
+                    sadness = emotionProbabilities.Sadness * 100;
+                    fear = emotionProbabilities.Fear * 100;
+
+                    Intent i = new Intent(getApplicationContext(), com.example.aayushiron.silvertongue.Emotion.class);
+                    startActivity(i);
                 } catch (VokaturiException e) {
-                    e.printStackTrace();
+                    if (e.getErrorCode() == VokaturiException.VOKATURI_NOT_ENOUGH_SONORANCY) {
+                        Toast.makeText(getApplicationContext(), "Unable to hear you. Please try again in a less noisy area or speak a little louder.", Toast.LENGTH_LONG).show();
+                    } else if (e.getErrorCode() == VokaturiException.VOKATURI_DENIED_PERMISSIONS) {
+                        Toast.makeText(getApplicationContext(), "Please give the application Microphone and Writing access", Toast.LENGTH_LONG).show();
+                    }
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
                 }
-
-                Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
-
-                emotion = capturedEmotion.toString();
-
-                happiness = emotionProbabilities.Happiness * 100;
-                neutrality = emotionProbabilities.Neutrality * 100;
-                angriness = emotionProbabilities.Anger * 100;
-                sadness = emotionProbabilities.Sadness * 100;
-                fear = emotionProbabilities.Fear * 100;
-
-                Intent i = new Intent(getApplicationContext(), com.example.aayushiron.silvertongue.Emotion.class);
-                startActivity(i);
             }
         });
 
         stopSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                elapsedTime = (System.currentTimeMillis() - startTime) / 3600000;
+                elapsedTime = (System.currentTimeMillis() - startTime) / 60000;
                 droidSpeech.closeDroidSpeechOperations();
 
                 Intent i = new Intent(getApplicationContext(), Speed.class);
@@ -157,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     @Override
     public void onDroidSpeechFinalResult(String finalSpeechResult)
     {
-
         String s = finalSpeechResult;
+
         int count = 1;
 
         for (int i = 0; i < s.length() - 1; i++)
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
 
             }
         }
-        wpm = (int)(count/elapsedTime);
+        wpm = (int) (count/elapsedTime);
     }
 
     @Override
@@ -179,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
 
     @Override
     public void onDroidSpeechError(String errorMsg) {
-        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        response.setText(errorMsg);
     }
 
     @Override

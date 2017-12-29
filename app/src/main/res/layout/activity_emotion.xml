@@ -129,6 +129,20 @@
             android:layout_height="wrap_content"
             android:max="100"
             android:progressBackgroundTint="#ff00ff"/>
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="25sp"/>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/go_back"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
 </RelativeLayout>

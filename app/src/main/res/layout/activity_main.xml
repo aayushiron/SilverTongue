@@ -47,7 +47,7 @@
             android:text="Please choose an option below"
             android:gravity="center_horizontal"
             android:textColor="#302e2e"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView20"
@@ -59,25 +59,44 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/analyze_emotions" />
+            app:srcCompat="@drawable/analyze_emotions"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/measure_speed" />
+            app:srcCompat="@drawable/measure_speed"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/button4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/stop_recording" />
+            app:srcCompat="@drawable/stop_recording"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/stop_recording" />
+            app:srcCompat="@drawable/stop_recording"
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 

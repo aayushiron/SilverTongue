@@ -15,7 +15,7 @@ public class Speed extends AppCompatActivity {
         fasterSlower = findViewById(R.id.textView27);
         range = findViewById(R.id.textView28);
 
-        speed.setText(MainActivity.wpm);
+        speed.setText(Integer.toString(MainActivity.wpm));
         if (MainActivity.wpm <= 150 && MainActivity.wpm >= 110) {
             fasterSlower.setText("You are speaking just right");
         } else if (MainActivity.wpm < 110) {
