@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements OnDSListener, OnDSPermissionsListener {
 
     Vokaturi vokaturiApi;
-    Button startEmotion, startSpeed, stopEmotion, stopSpeed;
+    ImageButton startEmotion, startSpeed, stopEmotion, stopSpeed;
     EmotionProbabilities emotionProbabilities = null;
     public static String emotion;
     DroidSpeech droidSpeech;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainActivity.this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
         permissionManager = new PermissionManager() {};
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
                 Toast.makeText(getApplicationContext(), "Please start presenting", Toast.LENGTH_SHORT).show();
                 droidSpeech.startDroidSpeechRecognition();
                 startSpeed.setVisibility(View.GONE);
+                startEmotion.setVisibility(View.GONE);
                 stopSpeed.setVisibility(View.VISIBLE);
             }
         });
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
                 elapsedTime = (System.currentTimeMillis() - startTime) / 3600000;
                 droidSpeech.closeDroidSpeechOperations();
 
-                Intent i = new Intent(getApplicationContext(), StatsPage.class);
+                Intent i = new Intent(getApplicationContext(), Speed.class);
                 startActivity(i);
             }
         });

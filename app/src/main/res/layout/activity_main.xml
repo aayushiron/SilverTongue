@@ -6,39 +6,79 @@
     android:layout_height="match_parent"
     tools:context="com.example.aayushiron.silvertongue.MainActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button3"
-        android:layout_alignBottom="@+id/button3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="27dp"
-        android:text="Analyze Emotions" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#dfdfdf"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="39dp"
-        android:text="Measure Speed" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Stop Recording" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Welcome to"
+            android:textColor="#302e2e"
+            android:textSize="55sp" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Stop Recording" />
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Silver Tongue"
+            android:gravity="center_horizontal"
+            android:textColor="#302e2e"
+            android:textSize="55sp"/>
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please choose an option below"
+            android:gravity="center_horizontal"
+            android:textColor="#302e2e"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"/>
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/analyze_emotions" />
+
+        <ImageButton
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/measure_speed" />
+
+        <ImageButton
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/stop_recording" />
+
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/stop_recording" />
+
+    </LinearLayout>
 
 </RelativeLayout>
