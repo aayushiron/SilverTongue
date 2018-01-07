@@ -14,6 +14,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneHelper;
+import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
+import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
+import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.BaseRecognizeCallback;
 import com.karan.churi.PermissionManager.PermissionManager;
 import com.projects.alshell.vokaturi.Emotion;
 import com.projects.alshell.vokaturi.EmotionProbabilities;
@@ -29,10 +34,10 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements OnDSListener, OnDSPermissionsListener {
+public class MainActivity extends AppCompatActivity implements OnDSListener {
 
     Vokaturi vokaturiApi;
-    ImageButton startEmotion, startSpeed, stopEmotion, stopSpeed;
+    Button startEmotion, startSpeed, stopEmotion, stopSpeed;
     EmotionProbabilities emotionProbabilities = null;
     public static String emotion;
     DroidSpeech droidSpeech;
@@ -41,7 +46,14 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     public static int wpm;
     public static double happiness, sadness, neutrality, angriness, fear;
     PermissionManager permissionManager;
-    TextView response;
+    SpeechToText speechService;
+    private StreamPlayer player = new StreamPlayer();
+    private MicrophoneHelper microphoneHelper;
+
+    private MicrophoneInputStream capture;
+    private boolean listening = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
         permissionManager = new PermissionManager() {};
         permissionManager.checkAndRequestPermissions(this);
 
-        startSpeed.setVisibility(View.GONE);
+        microphoneHelper = new MicrophoneHelper(this);
 
         try {
             vokaturiApi = Vokaturi.getInstance(getApplicationContext());
@@ -73,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
         stopSpeed.setVisibility(View.GONE);
 
         startEmotion = findViewById(R.id.button);
+
         startEmotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,18 +102,39 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
         });
 
         startSpeed = findViewById(R.id.button3);
+
+        startSpeed.setVisibility(View.GONE);
+
         startSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startTime = System.currentTimeMillis();
                 Toast.makeText(getApplicationContext(), "Please start presenting", Toast.LENGTH_SHORT).show();
-                droidSpeech.startDroidSpeechRecognition();
+//                if (!listening) {
+//                    capture = microphoneHelper.getInputStream(true);
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                speechService.recognizeUsingWebSocket(capture, getRecognizeOptions(), new MicrophoneRecognizeDelegate());
+//                            } catch (Exception e) {
+//
+//                            }
+//                        }
+//                    }).start();
+//                    listening = true;
+//                } else {
+//                    microphoneHelper.closeInputStream();
+//                    listening = false;
+//                }
+
+
                 startSpeed.setVisibility(View.GONE);
                 startEmotion.setVisibility(View.GONE);
                 stopSpeed.setVisibility(View.VISIBLE);
             }
         });
-        
+
         stopEmotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,10 +169,20 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
             @Override
             public void onClick(View view) {
                 elapsedTime = (System.currentTimeMillis() - startTime) / 60000;
-                droidSpeech.closeDroidSpeechOperations();
+                try {
+                    droidSpeech.closeDroidSpeechOperations();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
 
-                Intent i = new Intent(getApplicationContext(), Speed.class);
-                startActivity(i);
+                //onDroidSpeechFinalResult("Test");
+
+                //Toast.makeText(getApplicationContext(), "After closing operations", Toast.LENGTH_LONG).show();
+
+                stopSpeed.setVisibility(View.GONE);
+//
+//                Intent i = new Intent(getApplicationContext(), Speed.class);
+//                startActivity(i);
             }
         });
     }
@@ -150,7 +194,10 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
 
     @Override
     public void onDroidSpeechSupportedLanguages(String currentSpeechLanguage, List<String> supportedSpeechLanguages) {
-
+        if(supportedSpeechLanguages.contains("en-US")) {
+            // Setting the droid speech preferred language as english if found
+            droidSpeech.setPreferredLanguage("en-US");
+        }
     }
 
     @Override
@@ -164,8 +211,9 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
     }
 
     @Override
-    public void onDroidSpeechFinalResult(String finalSpeechResult)
-    {
+    public void onDroidSpeechFinalResult(String finalSpeechResult) {
+        Toast.makeText(getApplicationContext(), finalSpeechResult, Toast.LENGTH_LONG).show();
+
         String s = finalSpeechResult;
 
         int count = 1;
@@ -179,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
             }
         }
         wpm = (int) (count/elapsedTime);
+
+        Intent i = new Intent(getApplicationContext(), Speed.class);
+        startActivity(i);
     }
 
     @Override
@@ -188,11 +239,8 @@ public class MainActivity extends AppCompatActivity implements OnDSListener, OnD
 
     @Override
     public void onDroidSpeechError(String errorMsg) {
-        response.setText(errorMsg);
-    }
-
-    @Override
-    public void onDroidSpeechAudioPermissionStatus(boolean audioPermissionGiven, String errorMsgIfAny) {
-
+        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        Intent i = new Intent(getApplicationContext(), Speed.class);
+        startActivity(i);
     }
 }

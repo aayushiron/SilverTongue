@@ -56,11 +56,19 @@
             android:textSize="35sp"/>
 
         <ImageButton
-            android:id="@+id/button"
+            android:id="@+id/button13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/analyze_emotions"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Analyze Emotions" />
 
         <TextView
             android:id="@+id/textView22"
@@ -68,11 +76,18 @@
             android:layout_height="wrap_content" />
 
         <ImageButton
-            android:id="@+id/button3"
+            android:id="@+id/button10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/measure_speed"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Measure Speed" />
 
         <TextView
             android:id="@+id/textView29"
@@ -80,11 +95,18 @@
             android:layout_height="wrap_content" />
 
         <ImageButton
-            android:id="@+id/button4"
+            android:id="@+id/button11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/stop_recording"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Recording" />
 
         <TextView
             android:id="@+id/textView30"
@@ -92,11 +114,18 @@
             android:layout_height="wrap_content" />
 
         <ImageButton
-            android:id="@+id/button2"
+            android:id="@+id/button12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/stop_recording"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Recording" />
 
     </LinearLayout>
 
